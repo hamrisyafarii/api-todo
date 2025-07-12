@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../middlewares/user.middleware";
 import { TaskService } from "./task.service";
-import { CreateTaskSchema } from "../validators/task.schema";
+import { CreateTaskSchema, UpdateTaskSchema } from "../validators/task.schema";
 import { successResponse, errorResponse } from "../utils/responeHandler";
 import { CreateSubtaskSchema } from "../validators/subtask.schema";
 
@@ -34,7 +34,7 @@ export const getTasks = async (req: AuthRequest, res: Response) => {
 };
 
 export const updateTask = async (req: Request, res: Response) => {
-  const result = CreateTaskSchema.safeParse(req.body);
+  const result = UpdateTaskSchema.safeParse(req.body);
   if (!result.success) {
     return errorResponse(res, "Validasi gagal", 400, result.error.errors);
   }

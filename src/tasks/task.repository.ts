@@ -37,6 +37,9 @@ export class TaskRepository {
   async findAllByUser(userId: number) {
     return prisma.task.findMany({
       where: { userId },
+      orderBy: {
+        id: "desc",
+      },
       include: {
         category: true,
         labels: true,
@@ -145,8 +148,6 @@ export class TaskRepository {
       sortOrder = "desc",
     } = query;
 
-    console.log("Filter params", { status, priority, sortBy, sortOrder });
-    console.log("Query userId", userId);
 
     const where: Prisma.TaskWhereInput = {
       userId,
