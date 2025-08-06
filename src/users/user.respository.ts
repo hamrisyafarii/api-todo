@@ -8,16 +8,35 @@ export class UserRepository {
     });
   }
 
-  async findById(id: number) {
-    if (!id) throw new Error("User ID is required");
+  async findByUsername(username: string) {
     return await prisma.user.findUnique({
-      where: { id },
+      where: { username },
     });
   }
 
-  async createNewUser(userData: Prisma.UserCreateInput) {
+  async findById(id: string) {
+    return await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  }
+
+  async createNewUser(data: Prisma.UserCreateInput) {
     return await prisma.user.create({
-      data: userData,
+      data,
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
   }
 }
