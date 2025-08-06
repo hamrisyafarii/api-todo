@@ -9,7 +9,7 @@ export class CategoryRepository {
     });
   }
 
-  async findById(id: number) {
+  async findById(id: string) {
     return prisma.category.findUnique({
       where: { id },
     });
@@ -21,14 +21,14 @@ export class CategoryRepository {
     });
   }
 
-  async update(id: number, name: string) {
+  async update(id: string, name: string) {
     return prisma.category.update({
       where: { id },
       data: { name },
     });
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     return prisma.category.delete({
       where: { id },
     });

@@ -8,55 +8,55 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  name      String
-  email     String  @unique
+  id        String   @id @default(cuid())
+  username  String   @unique
+  email     String   @unique
   password  String
+
   tasks     Task[]
+  
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Task {
-  id          Int       @id @default(autoincrement())
+  id          String       @id @default(cuid())
   title       String
   description String?
   priority    Priority  @default(MEDIUM)
   status      Status    @default(PENDING)
   deadline    DateTime?
   isFavorite  Boolean   @default(false)
-  isArchived  Boolean   @default(false)
-  userId      Int
+
+  userId      String
   user        User      @relation(fields: [userId], references: [id])
-  categoryId  Int?
-  category    Category? @relation(fields: [categoryId], references: [id])
-  labels      Label[]   @relation("TaskLabels")
+  
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  
   comments    Comment[]
-  subtasks    Task[]    @relation("SubTasks")
-  parentTask  Task?     @relation("SubTasks", fields: [parentTaskId], references: [id])
-  parentTaskId Int?
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 }
 
 model Category {
-  id     Int    @id @default(autoincrement())
-  name   String @unique
+  id     String      @id @default(cuid())
+  name   String      @unique
   tasks  Task[]
-}
 
-model Label {
-  id     Int     @id @default(autoincrement())
-  name   String  @unique
-  tasks  Task[]  @relation("TaskLabels")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   content   String
-  taskId    Int
+  taskId    String
   task      Task     @relation(fields: [taskId], references: [id])
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum Priority {

@@ -41,7 +41,7 @@ export class CategoryController {
   }
 
   async update(req: Request, res: Response) {
-    const id = Number(req.params.id);
+    const id = req.params.id;
     const { name } = req.body;
     try {
       const updated = await categoryServices.updateCategory(id, name);
@@ -53,11 +53,11 @@ export class CategoryController {
   }
 
   async delete(req: Request, res: Response) {
-    const id = Number(req.params.id);
     try {
-      const deleted = await categoryServices.deleteCategory(id);
+      const id = req.params.id;
+      await categoryServices.deleteCategory(id);
 
-      return successResponse(res, "Berhasil menghapus kategori", deleted);
+      return successResponse(res, "Berhasil menghapus kategori");
     } catch (error: any) {
       return errorResponse(res, error.message);
     }
