@@ -7,13 +7,13 @@ async function main() {
   console.log("🌱 Seeding database...");
 
   // 1. Hash password user
-  const hashedPassword = await bcrypt.hash("password123", 10);
+  const hashedPassword = await bcrypt.hash("password", 10);
 
   // 2. Create user
   const user = await prisma.user.create({
     data: {
       name: "Hamri Syafari",
-      email: "hamri@example.com",
+      email: "hamri@gmail.com",
       password: hashedPassword,
     },
   });
