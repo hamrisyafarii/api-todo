@@ -7,7 +7,7 @@ export class CategoryServices {
     return categoryRepository.findAllCategory();
   }
 
-  async getCategoryById(id: number) {
+  async getCategoryById(id: string) {
     return categoryRepository.findById(id);
   }
 
@@ -15,11 +15,11 @@ export class CategoryServices {
     return categoryRepository.create(name);
   }
 
-  async updateCategory(id: number, name: string) {
+  async updateCategory(id: string, name: string) {
     return categoryRepository.update(id, name);
   }
 
-  async deleteCategory(id: number) {
+  async deleteCategory(id: string) {
     return categoryRepository.delete(id);
   }
 }
