@@ -1,63 +1,49 @@
-import { Priority, Status } from "@prisma/client";
+import { CreateTaskScehma, UpdateTaskSchema } from "../validators/task.schema";
 import { TaskRepository } from "./task.repository";
 
 const taskRepo = new TaskRepository();
 
-export class TaskService {
-  createTask(data: any) {
-    return taskRepo.create(data);
+export class TaskServices {
+  async createTask(data: CreateTaskScehma, userId: string) {
+    const task = await taskRepo.createNewTask({
+      ...data,
+      userId,
+    });
+
+    return task;
   }
 
-  getUserTasks(userId: number) {
-    return taskRepo.findAllByUser(userId);
+  async getAllTasks(query: { search?: string; sort?: string; order?: string }) {
+    return await taskRepo.findAllTask(query);
   }
 
-  updateTask(id: number, data: any) {
-    return taskRepo.update(id, data);
+  async getTaskId(id: string) {
+    const taskId = await taskRepo.findById(id);
+    if (!taskId) {
+      throw new Error("Task tidak ditemukan");
+    }
+    return taskId;
   }
 
-  deleteTask(id: number) {
-    return taskRepo.delete(id);
+  async updateTask(id: string, data: UpdateTaskSchema) {
+    const task = await taskRepo.updateDataTask(id, data);
+    if (!task) {
+      throw new Error("Task tidak ditemukan, tidak bisa update");
+    }
+    return task;
   }
 
-  getTaskById(id: number) {
-    return taskRepo.findById(id);
-  }
+  async deleteTask(id: string, userId: string) {
+    const task = await taskRepo.deleteDataTask(id);
 
-  //   New featur
-  toggleFavorite(id: number, isFavorite: boolean) {
-    return taskRepo.toggleFavorite(id, isFavorite);
-  }
+    if (!task) {
+      throw new Error("Task tidak ditemukan, tidak bisa delete");
+    }
 
-  toggleArchive(id: number, isArchived: boolean) {
-    return taskRepo.toggleArchive(id, isArchived);
-  }
+    if (task.userId !== userId) {
+      throw new Error("Tidak ada akses untuk menghapus task ini");
+    }
 
-  async createSubtask(data: {
-    title: string;
-    description?: string;
-    priority: Priority;
-    status: Status;
-    deadline?: string;
-    parentTaskId: number;
-    userId: number;
-  }) {
-    return taskRepo.createSubtask(data);
-  }
-
-  getSubtasks(parentTaskId: number) {
-    return taskRepo.getSubtasks(parentTaskId);
-  }
-
-  async addComment(taskId: number, content: string) {
-    return taskRepo.addCommentToTask(taskId, content);
-  }
-
-  async getComments(taskId: number) {
-    return taskRepo.getCommentsByTask(taskId);
-  }
-
-  async getFilteredTasks(userId: number, query: any) {
-    return taskRepo.getFilteredTasks(userId, query);
+    return task;
   }
 }
