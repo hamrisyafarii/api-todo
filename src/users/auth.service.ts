@@ -44,7 +44,11 @@ export class AuthService {
     const isValid = await bcrypt.compare(data.password, user.password);
     if (!isValid) throw new Error("Invalid Username or password");
 
-    const token = generateToken({ id: user.id, email: user.email });
+    const token = generateToken({
+      id: user.id,
+      email: user.email,
+      username: user.username,
+    });
 
     const { password, ...UserWithoutPassword } = user;
 

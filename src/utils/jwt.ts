@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 
 interface JwtPayload {
   id: string;
+  username: string;
   email: string;
 }
 

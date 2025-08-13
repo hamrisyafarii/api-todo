@@ -5,7 +5,10 @@ import { CreateTaskScehma, UpdateTaskSchema } from "../validators/task.schema";
 export class TaskRepository {
   async createNewTask(data: CreateTaskScehma & { userId: string }) {
     return await prisma.task.create({
-      data,
+      data: {
+        ...data,
+        deadline: data.deadline ? new Date(data.deadline) : null,
+      },
       include: {
         category: { select: { name: true } },
         user: { select: { id: true, username: true, email: true } },
@@ -78,7 +81,10 @@ export class TaskRepository {
   async updateDataTask(id: string, data: UpdateTaskSchema) {
     return await prisma.task.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        deadline: data.deadline ? new Date(data.deadline) : null,
+      },
       include: {
         category: { select: { name: true } },
         user: { select: { id: true, username: true, email: true } },

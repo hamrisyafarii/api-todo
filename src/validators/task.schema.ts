@@ -1,4 +1,4 @@
-import { TypeOf, z } from "zod";
+import { z } from "zod";
 
 export const createTaskSchema = z.object({
   title: z.string().min(3, "Judul minimal 3 karakter"),

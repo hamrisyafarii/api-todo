@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { errorResponse, verifyToken } from "../utils";
 
 export interface AuthRequest extends Request {
-  user?: { id: string; email: string };
+  user?: { id: string; email: string; username: string };
 }
 
 export const authenticate = (
@@ -21,6 +21,6 @@ export const authenticate = (
     req.user = decoded;
     next();
   } catch (error) {
-    return errorResponse(res, (error as Error).message, 401);
+    return errorResponse(res, "Invalid token", 401);
   }
 };
