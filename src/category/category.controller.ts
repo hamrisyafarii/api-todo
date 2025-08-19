@@ -20,6 +20,22 @@ export class CategoryController {
     }
   }
 
+  async getCategoryById(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const categori = await categoryServices.getCategoryById(id);
+
+      return successResponse(
+        res,
+        "Berhasil mengambil data category by id",
+        categori,
+        200
+      );
+    } catch (error: any) {
+      return errorResponse(res, error.message);
+    }
+  }
+
   async create(req: Request, res: Response) {
     const { name } = req.body;
     if (!name) {

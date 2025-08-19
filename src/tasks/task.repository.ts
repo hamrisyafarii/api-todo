@@ -97,4 +97,11 @@ export class TaskRepository {
       where: { id },
     });
   }
+
+  async toggleFavorite(id: string, isFavorite: boolean) {
+    return prisma.task.update({
+      where: { id },
+      data: { isFavorite },
+    });
+  }
 }

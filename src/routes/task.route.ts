@@ -14,4 +14,6 @@ router.post("/task", taskController.create);
 router.put("/task/:id", taskController.update);
 router.delete("/task/:id", taskController.delete);
 
+router.patch("/task/:id/isFav", taskController.toggleFavoriteTask);
+
 export default router;

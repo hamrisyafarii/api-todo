@@ -46,4 +46,8 @@ export class TaskServices {
 
     return task;
   }
+
+  async toggleFavorite(id: string, isFavorite: boolean) {
+    return taskRepo.toggleFavorite(id, isFavorite);
+  }
 }

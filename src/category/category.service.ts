@@ -12,7 +12,14 @@ export class CategoryServices {
   }
 
   async createCategory(name: string) {
-    return categoryRepository.create(name);
+    const existingName = await categoryRepository.findByName(name);
+    if (existingName) {
+      throw new Error(
+        "Kategori sudah digunakan, harap menggunakan nama lain !"
+      );
+    }
+
+    return await categoryRepository.create(name);
   }
 
   async updateCategory(id: string, name: string) {

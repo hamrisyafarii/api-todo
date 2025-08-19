@@ -60,4 +60,22 @@ export class TaskController {
       return errorResponse(res, (error as Error).message, 500);
     }
   }
+
+  async toggleFavoriteTask(req: AuthRequest, res: Response) {
+    const taskId = req.params.id;
+    const { isFavorite } = req.body;
+    if (typeof isFavorite !== "boolean") {
+      return errorResponse(res, "Field 'isFavorite' harus berupa boolean", 400);
+    }
+    try {
+      const task = await taskServices.toggleFavorite(taskId, isFavorite);
+      return successResponse(
+        res,
+        "Berhasil mengubah status favorit task",
+        task
+      );
+    } catch (err: any) {
+      return errorResponse(res, err.message);
+    }
+  }
 }
