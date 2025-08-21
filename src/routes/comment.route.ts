@@ -4,8 +4,8 @@ import { CommentController } from "../comments/comment.controller";
 const commentController = new CommentController();
 const router = Router();
 
-router.get("/comment/task/:taskId", commentController.getByTaskId);
+router.get("/comment/task/:id", commentController.getByTaskId);
 router.post("/comment", commentController.create);
-router.delete("/comment/:commentId", commentController.delete);
+router.delete("/comment/:id", commentController.delete);
 
 export default router;
