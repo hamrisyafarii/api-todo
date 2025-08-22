@@ -2,19 +2,12 @@ import { Prisma } from "@prisma/client";
 import prisma from "../config/prisma";
 import { CreateTaskScehma, UpdateTaskSchema } from "../validators/task.schema";
 
-interface queryTypes {
-  search?: string;
-  sort?: string;
-  order?: string;
-  page?: string;
-  limit?: string;
-}
-
 export class TaskRepository {
   async createNewTask(data: CreateTaskScehma & { userId: string }) {
     return await prisma.task.create({
       data: {
         ...data,
+        categoryId: data.categoryId || null,
         deadline: data.deadline ? new Date(data.deadline) : null,
       },
       include: {
@@ -83,6 +76,13 @@ export class TaskRepository {
   async findById(id: string) {
     return await prisma.task.findUnique({
       where: { id },
+      include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
   }
 

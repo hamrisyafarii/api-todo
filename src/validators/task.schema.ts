@@ -9,7 +9,7 @@ export const createTaskSchema = z.object({
     .default("PENDING"),
   deadline: z.string().datetime("Deadline harus format ISO date").optional(),
   isFavorite: z.boolean().optional().default(false),
-  categoryId: z.string().optional(),
+  categoryId: z.string().optional().nullable(),
 });
 
 export const updateTaskSchema = z.object({

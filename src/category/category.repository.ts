@@ -32,7 +32,7 @@ export class CategoryRepository {
 
   async findByName(name: string, userId: string) {
     return prisma.category.findFirst({
-      where: { name: name.toLowerCase(), userId },
+      where: { name: name.toLowerCase().trim(), userId },
     });
   }
 
