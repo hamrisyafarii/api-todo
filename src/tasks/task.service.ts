@@ -17,6 +17,17 @@ export class TaskServices {
     return await taskRepo.findAllTask(query);
   }
 
+  async getAllByUser(
+    userId: string,
+    query: { search?: string; sort?: string; order?: string }
+  ) {
+    const task = await taskRepo.findByUser(userId, query);
+    if (!task) {
+      throw new Error("Task not found");
+    }
+    return task;
+  }
+
   async getTaskId(id: string) {
     const taskId = await taskRepo.findById(id);
     if (!taskId) {

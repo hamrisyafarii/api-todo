@@ -1,10 +1,25 @@
 import prisma from "../config/prisma";
 
 export class CategoryRepository {
-  async findAllCategory() {
+  async findAllCategory(userId: string) {
     return prisma.category.findMany({
+      where: {
+        userId,
+      },
       orderBy: {
         id: "desc",
+      },
+      include: {
+        tasks: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -15,15 +30,15 @@ export class CategoryRepository {
     });
   }
 
-  async findByName(name: string) {
-    return prisma.category.findUnique({
-      where: { name },
+  async findByName(name: string, userId: string) {
+    return prisma.category.findFirst({
+      where: { name: name.toLowerCase(), userId },
     });
   }
 
-  async create(name: string) {
+  async create(name: string, userId: string) {
     return prisma.category.create({
-      data: { name },
+      data: { name, userId },
     });
   }
 

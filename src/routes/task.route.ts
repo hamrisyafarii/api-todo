@@ -9,6 +9,7 @@ const router = Router();
 router.use(authenticate);
 
 router.get("/tasks", taskController.getAllTasks);
+router.get("/tasksUser", taskController.getTaskByUser);
 router.get("/task/:id", taskController.getTaskById);
 router.post("/task", taskController.create);
 router.put("/task/:id", taskController.update);

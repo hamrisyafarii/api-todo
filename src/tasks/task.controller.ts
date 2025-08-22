@@ -31,6 +31,16 @@ export class TaskController {
     }
   }
 
+  async getTaskByUser(req: AuthRequest, res: Response) {
+    try {
+      const data = await taskServices.getAllByUser(req.user!.id, req.query);
+
+      successResponse(res, "Berhasil mengambil data task by user", data);
+    } catch (error) {
+      return errorResponse(res, (error as Error).message, 500);
+    }
+  }
+
   async getTaskById(req: Request, res: Response) {
     try {
       const task = await taskServices.getTaskId(req.params.id);
@@ -53,9 +63,9 @@ export class TaskController {
 
   async delete(req: AuthRequest, res: Response) {
     try {
-      await taskServices.deleteTask(req.params.id, req.user!.id);
+      const data = await taskServices.deleteTask(req.params.id, req.user!.id);
 
-      return successResponse(res, "Task berhasil di hapus");
+      return successResponse(res, "Task berhasil di hapus", data);
     } catch (error) {
       return errorResponse(res, (error as Error).message, 500);
     }

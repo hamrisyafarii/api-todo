@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { CategoryServices } from "./category.service";
 import { errorResponse, successResponse } from "../utils";
+import { AuthRequest } from "../middlewares/auth.middleware";
 
 const categoryServices = new CategoryServices();
 
 export class CategoryController {
-  async getCategories(_req: Request, res: Response) {
+  async getCategories(req: AuthRequest, res: Response) {
     try {
-      const categories = await categoryServices.getAllCategory();
+      const categories = await categoryServices.getAllCategory(req.user!.id);
 
       return successResponse(
         res,
@@ -36,14 +37,15 @@ export class CategoryController {
     }
   }
 
-  async create(req: Request, res: Response) {
+  async create(req: AuthRequest, res: Response) {
     const { name } = req.body;
+    const userId = req.user!.id;
     if (!name) {
       throw new Error("Kateogri wajin di isi");
     }
 
     try {
-      const created = await categoryServices.createCategory(name);
+      const created = await categoryServices.createCategory(name, userId);
 
       return successResponse(
         res,
